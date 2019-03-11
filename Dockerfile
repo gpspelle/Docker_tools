@@ -5,6 +5,7 @@ ARG python_version=3.7
 
 # Update package list and install dependencies
 RUN apt-get -qq update && \
+    apt-get -y install sudo && \
     apt-get -qq install -y --no-install-recommends build-essential \
     ca-certificates libgtk2.0-0 sqlite3 wget git libhdf5-dev g++ graphviz unzip x11-apps sudo && \
     apt-get -qq clean
@@ -35,13 +36,19 @@ RUN export uid=1000 gid=1000 && \
     mkdir -p /project && \
     chown developer /project
 
-USER developer
-ENV HOME /home/developer
-
 # Install Python libraries 
 RUN conda update -n base conda &&\
     conda install --quiet --yes python=${python_version} &&\
     conda install tensorflow-gpu keras opencv Pillow scikit-learn notebook pandas matplotlib mkl nose  pyyaml six h5py pygpu && \
     conda clean -yt   
 
-WORKDIR /home/developer/Fall_detection/semantiX
+RUN apt-get update && apt-get install sudo
+
+RUN adduser --disabled-password --gecos '' docker
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER docker
+ENV HOME /home/docker
+
+WORKDIR /home/docker/
