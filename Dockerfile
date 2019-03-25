@@ -24,7 +24,7 @@ ENV PYTHONPATH='/project/:$PYTHONPATH'
 # Install Python libraries 
 RUN conda update -n base conda &&\
     conda install --quiet --yes python=${python_version} &&\
-    conda install tensorflow-gpu=1.12.0 keras=2.1.6 opencv=3.4.5 Pillow scikit-learn notebook pandas matplotlib mkl nose  pyyaml six h5py pygpu && \
+    conda install tensorflow-gpu=1.12.0 keras=2.1.6 opencv=3.4.2 Pillow scikit-learn notebook pandas matplotlib mkl nose  pyyaml six h5py pygpu && \
     conda clean -yt   
 
 RUN apt-get update && apt-get install sudo
